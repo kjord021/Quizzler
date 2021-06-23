@@ -173,8 +173,22 @@ namespace Quizzler.Controllers
                 return BadRequest(e);
             }
         }
-        //Update
 
-        //Delete
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUserById(int id)
+        {
+            try
+            {
+                var user = await UserRepositoryFunctions.GetUserById(id, _context);
+                await UserRepositoryFunctions.DeleteUser(user, _context);
+            }
+            catch (Exception e) 
+            {
+                return BadRequest(e);
+            }
+
+            return Ok("User Sucessfully Deleted");
+        }
+
     }
 }

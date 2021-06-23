@@ -29,6 +29,12 @@ namespace Quizzler.Logic
             } 
         }
 
+        public static async Task DeleteUser(User user, UserDbContext context) 
+        {
+            context.users.Remove(user);
+            await context.SaveChangesAsync();
+        }
+
         public static async Task<User> GetUserByUserName(string username, UserDbContext context) 
         {
             var existingUsers = context.users;
