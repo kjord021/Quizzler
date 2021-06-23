@@ -32,7 +32,7 @@ namespace Quizzler.Controllers
 
                 var returnString = EnsureValidInput.EnsureUserData(newUser, confPassword, _context);
 
-                if (returnString == new UserReturnString(0).Value)
+                if (returnString == UserConstants.Ok)
                 {
                     await UserRepositoryFunctions.CreateUser(newUser, _context);
                 }
@@ -50,7 +50,45 @@ namespace Quizzler.Controllers
             return Ok();
         }
 
-        //Read
+        [HttpGet("{username}/username")]
+        public async Task<IActionResult> ReadUserByUserName(string username)
+        {
+            try 
+            {
+                var user = await UserRepositoryFunctions.GetUserByUserName(username, _context);
+
+                if (user != null) 
+                {
+                    return Ok(user);
+                }
+            }
+            catch (Exception e)
+            {
+                BadRequest(e);
+            }
+
+            return Ok("The User Does Not Exist");
+        }
+
+        [HttpGet("{id}/userId")]
+        public async Task<IActionResult> ReadUserById(int id)
+        {
+            try
+            {
+                var user = await UserRepositoryFunctions.GetUserById(id, _context);
+
+                if (user != null)
+                {
+                    return Ok(user);
+                }
+            }
+            catch (Exception e)
+            {
+                BadRequest(e);
+            }
+
+            return Ok("The User Does Not Exist");
+        }
 
         //Update
 

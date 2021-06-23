@@ -15,11 +15,11 @@ namespace Quizzler.Logic
             if (String.IsNullOrWhiteSpace(newUser.UserName) || String.IsNullOrWhiteSpace(newUser.Password)
                 || String.IsNullOrWhiteSpace(newUser.Email))
             {
-                return new UserReturnString(0).Value;
+                return UserConstants.InvalidData;
             }
             else if (newUser.Password != confPassword)
             {
-                return new UserReturnString(2).Value;
+                return UserConstants.PasswordMismatch;
             }
             if (newUser.UserName.Length > 0)
             {
@@ -29,7 +29,7 @@ namespace Quizzler.Logic
                 {
                     if (user.UserName == newUser.UserName)
                     {
-                        return new UserReturnString(3).Value;
+                        return UserConstants.UserNameExist;
                     }
                 }
             }
@@ -41,14 +41,14 @@ namespace Quizzler.Logic
                 {
                     if (user.Email == newUser.Email)
                     {
-                        return new UserReturnString(4).Value;
+                        return UserConstants.EmailExist;
                     }
                 }
 
 
             }
 
-            return new UserReturnString(1).Value;
+            return UserConstants.Ok;
         }
     }
 }

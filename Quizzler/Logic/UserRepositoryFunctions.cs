@@ -16,5 +16,39 @@ namespace Quizzler.Logic
             await context.SaveChangesAsync();
         }
 
+        public static async Task<User> GetUserByUserName(string username, UserDbContext context) 
+        {
+            var existingUsers = context.users;
+            var newUser = new User();
+
+            foreach (var user in existingUsers) 
+            {
+                if (user.UserName == username) 
+                {
+                    newUser = user;
+                    return newUser;
+                }
+            }
+
+            return null;
+        }
+
+        public static async Task<User> GetUserById(int id, UserDbContext context)
+        {
+            var existingUsers = context.users;
+            var newUser = new User();
+
+            foreach (var user in existingUsers)
+            {
+                if (user.Id == id)
+                {
+                    newUser = user;
+                    return newUser;
+                }
+            }
+
+            return null;
+        }
+
     }
 }
