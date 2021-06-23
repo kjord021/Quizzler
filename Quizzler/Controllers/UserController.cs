@@ -90,6 +90,89 @@ namespace Quizzler.Controllers
             return Ok("The User Does Not Exist");
         }
 
+        [HttpPut("{username}/updateUserName")]
+        public async Task<IActionResult> UpdateUserByUsername(string username, string newUserName, string password, string confPassword, string emailAddress)
+        {
+            try
+            {
+                var user = await UserRepositoryFunctions.GetUserByUserName(username, _context);
+
+                if (user != null)
+                {
+                    var returnString = EnsureValidInput.EnsureUserDataOnUpdate(user, confPassword);
+
+                    if (returnString == UserConstants.Ok)
+                    {
+                        var newUserData = new User()
+                        {
+                            Id = user.Id,
+                            UserName = newUserName,
+                            Password = password,
+                            Email = emailAddress
+                        };
+
+                        await UserRepositoryFunctions.UpdateUser(newUserData, _context);
+
+                        return Ok("User Successfully Updated");
+                    }
+                    else 
+                    {
+                        return Ok(returnString);
+                    }
+                }
+                else 
+                {
+                    return Ok("The User Does Not Exist");
+                }
+
+            }
+            catch (Exception e) 
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpPut("{id}/updateId")]
+        public async Task<IActionResult> UpdateUserById(int id, string username, string password, string confPassword, string emailAddress)
+        {
+            try
+            {
+                var user = await UserRepositoryFunctions.GetUserById(id, _context);
+
+                if (user != null)
+                {
+                    var returnString = EnsureValidInput.EnsureUserDataOnUpdate(user, confPassword);
+
+                    if (returnString == UserConstants.Ok)
+                    {
+                        var newUserData = new User()
+                        {
+                            Id = user.Id,
+                            UserName = username,
+                            Password = password,
+                            Email = emailAddress
+                        };
+
+                        await UserRepositoryFunctions.UpdateUser(newUserData, _context);
+
+                        return Ok("User Successfully Updated");
+                    }
+                    else
+                    {
+                        return Ok(returnString);
+                    }
+                }
+                else
+                {
+                    return Ok("The User Does Not Exist");
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
         //Update
 
         //Delete

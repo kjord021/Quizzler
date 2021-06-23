@@ -50,5 +50,21 @@ namespace Quizzler.Logic
 
             return UserConstants.Ok;
         }
+
+        public static string EnsureUserDataOnUpdate(User newUser, string confPassword)
+        {
+
+            if (String.IsNullOrWhiteSpace(newUser.UserName) || String.IsNullOrWhiteSpace(newUser.Password)
+                || String.IsNullOrWhiteSpace(newUser.Email))
+            {
+                return UserConstants.InvalidData;
+            }
+            else if (newUser.Password != confPassword)
+            {
+                return UserConstants.PasswordMismatch;
+            }
+
+            return UserConstants.Ok;
+        }
     }
 }
