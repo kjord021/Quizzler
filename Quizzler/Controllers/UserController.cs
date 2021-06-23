@@ -50,41 +50,28 @@ namespace Quizzler.Controllers
             return Ok();
         }
 
-        [HttpGet("{username}/username")]
-        public async Task<IActionResult> ReadUserByUserName(string username)
-        {
-            try 
-            {
-                var user = await UserRepositoryFunctions.GetUserByUserName(username, _context);
-
-                if (user != null) 
-                {
-                    return Ok(user);
-                }
-            }
-            catch (Exception e)
-            {
-                BadRequest(e);
-            }
-
-            return Ok("The User Does Not Exist");
-        }
-
-        [HttpGet("{id}/userId")]
-        public async Task<IActionResult> ReadUserById(int id)
+        [HttpGet("{username}/username/{password}/password")]
+        public async Task<IActionResult> AttemptLogin(string username, string password) 
         {
             try
             {
-                var user = await UserRepositoryFunctions.GetUserById(id, _context);
+                var user = await UserRepositoryFunctions.GetUserByUserName(username, _context);
 
                 if (user != null)
                 {
-                    return Ok(user);
+                    if (password == user.Password)
+                    {
+                        return Ok(UserConstants.SuccessMessage);
+                    }
+                    else 
+                    {
+                        return BadRequest("Incorrect Password");
+                    }
                 }
             }
             catch (Exception e)
             {
-                BadRequest(e);
+                return BadRequest(e);
             }
 
             return Ok("The User Does Not Exist");
