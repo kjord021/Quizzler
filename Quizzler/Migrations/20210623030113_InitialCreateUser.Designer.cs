@@ -9,7 +9,7 @@ using Quizzler.Contexts;
 namespace Quizzler.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20210623014550_InitialCreateUser")]
+    [Migration("20210623030113_InitialCreateUser")]
     partial class InitialCreateUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,8 +22,10 @@ namespace Quizzler.Migrations
 
             modelBuilder.Entity("Quizzler.Models.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");

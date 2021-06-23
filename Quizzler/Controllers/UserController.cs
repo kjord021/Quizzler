@@ -18,14 +18,11 @@ namespace Quizzler.Controllers
             _context = context;
         }
 
-        //Create
         [HttpPost]
         public async Task<IActionResult> CreateUser(string username, string password, string confPassword, string emailAddress)
         {
-
             try
             {
-
                 User newUser = new User()
                 {
                     UserName = username,
@@ -33,16 +30,15 @@ namespace Quizzler.Controllers
                     Email = emailAddress
                 };
 
-                var validInput = EnsureValidInput.EnsureUserData(newUser, confPassword);
+                var returnString = EnsureValidInput.EnsureUserData(newUser, confPassword, _context);
 
-                if (validInput)
+                if (returnString == new UserReturnString(0).Value)
                 {
-                    await _context.AddAsync(newUser);
-                    await _context.SaveChangesAsync();
+                    await UserRepositoryFunctions.CreateUser(newUser, _context);
                 }
                 else
                 {
-                    return BadRequest("Invalid User Data.");
+                    return BadRequest(returnString);
                 }
 
             }
